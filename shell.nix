@@ -35,6 +35,7 @@ pkgs.stdenv.mkDerivation {
   name = "shell";
 
   buildInputs = with pkgs; [
+    pv
     python
     pythonPackages.ipython
 

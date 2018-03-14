@@ -1,4 +1,4 @@
-{ python, pythonPackages, callPackage, leveldb, plyvel, python-bitcoinlib, base58 }:
+{ python, pythonPackages, callPackage, leveldb, plyvel, python-bitcoinlib, base58, binutils-raw, openssl }:
 
 let
   python-bitcoinlib = callPackage ./python-bitcoinlib.nix {
@@ -21,6 +21,8 @@ in pythonPackages.buildPythonPackage {
 
   postFixup = ''
     wrapProgram $out/bin/utxo2csv \
-      --prefix DYLD_LIBRARY_PATH : "${leveldb}/lib"
+      --prefix DYLD_LIBRARY_PATH : "${leveldb}/lib:${openssl.out}/lib" \
+      --prefix LD_LIBRARY_PATH : "${leveldb}/lib:${openssl.out}/lib" \
+      --prefix PATH : "${binutils-raw.bintools}/bin"
   '';
 }
